@@ -24,9 +24,9 @@ clickBtn.ariaLabel = "Click the cat!";
 const catIcon = document.createElement("img");
 catIcon.src = catImg;
 catIcon.alt = "Cat";
-catIcon.style.width = "150px";  
-catIcon.style.height = "150px"; 
-catIcon.style.border = "none";   
+catIcon.style.width = "150px";
+catIcon.style.height = "150px";
+catIcon.style.border = "none";
 
 clickBtn.append(catIcon);
 app.append(clickBtn);
@@ -35,3 +35,8 @@ clickBtn.addEventListener("click", () => {
   counter++;
   counterEl.textContent = `${counter} cats`;
 });
+
+setInterval(() => {
+  counter++;
+  counterEl.textContent = `${counter} cats`;
+}, 1000);
