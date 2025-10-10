@@ -1,6 +1,17 @@
-import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
 import "./style.css";
+import catImg from "./Cat.png";
 
-document.body.innerHTML = `
-  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-`;
+const clickBtn = document.createElement("button");
+clickBtn.type = "button";
+clickBtn.style.fontSize = "2rem";
+clickBtn.style.padding = "12px 16px";
+clickBtn.style.cursor = "pointer";
+clickBtn.ariaLabel = "Click the cat!";
+
+const catIcon = document.createElement("img");
+catIcon.src = catImg;
+catIcon.alt = "Cat";
+catIcon.className = "icon";
+
+clickBtn.append(catIcon);
+document.body.append(clickBtn);
