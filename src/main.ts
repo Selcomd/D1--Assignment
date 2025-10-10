@@ -60,7 +60,8 @@ let lastTime = performance.now();
 
 function update(now: number) {
   const deltaSeconds = (now - lastTime) / 1000;
-  lastTime = now;queueMicrotask
+  lastTime = now;
+  queueMicrotask;
   counter += growthRate * deltaSeconds;
 
   render();
