@@ -33,10 +33,20 @@ app.append(clickBtn);
 
 clickBtn.addEventListener("click", () => {
   counter++;
-  counterEl.textContent = `${counter} cats`;
+  counterEl.textContent = `${counter.toFixed(0)} cats`;
 });
 
-setInterval(() => {
-  counter++;
-  counterEl.textContent = `${counter} cats`;
-}, 1000);
+let lastTime = performance.now();
+
+function update(now: number) {
+  const deltaSeconds = (now - lastTime) / 1000; 
+  lastTime = now;
+
+  counter += deltaSeconds;
+
+  counterEl.textContent = `${Math.floor(counter)} cats`;
+
+  requestAnimationFrame(update);
+}
+
+requestAnimationFrame(update);
