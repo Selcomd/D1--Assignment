@@ -1,17 +1,37 @@
 import "./style.css";
 import catImg from "./Cat.png";
 
+const app = document.createElement("div");
+app.style.display = "flex";
+app.style.flexDirection = "column";
+app.style.justifyContent = "center";
+app.style.alignItems = "center";
+app.style.height = "100vh";
+app.style.gap = "16px";
+document.body.append(app);
+
+let counter = 0;
+const counterEl = document.createElement("div");
+counterEl.style.fontSize = "2rem";
+counterEl.style.fontWeight = "bold";
+counterEl.textContent = `${counter} cats`;
+app.append(counterEl);
+
 const clickBtn = document.createElement("button");
 clickBtn.type = "button";
-clickBtn.style.fontSize = "2rem";
-clickBtn.style.padding = "12px 16px";
-clickBtn.style.cursor = "pointer";
 clickBtn.ariaLabel = "Click the cat!";
 
 const catIcon = document.createElement("img");
 catIcon.src = catImg;
 catIcon.alt = "Cat";
-catIcon.className = "icon";
+catIcon.style.width = "150px";  
+catIcon.style.height = "150px"; 
+catIcon.style.border = "none";   
 
 clickBtn.append(catIcon);
-document.body.append(clickBtn);
+app.append(clickBtn);
+
+clickBtn.addEventListener("click", () => {
+  counter++;
+  counterEl.textContent = `${counter} cats`;
+});
