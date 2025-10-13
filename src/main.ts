@@ -21,13 +21,15 @@ interface Item {
   baseCost: number;
   cost: number;
   count: number;
-  button?: HTMLButtonElement;
+  description: string;
 }
 
-const availableItems: Item[] = [
-  { name: "Toy Mouse", rate: 0.1, baseCost: 10, cost: 10, count: 0 },
-  { name: "Kitten", rate: 2, baseCost: 100, cost: 100, count: 0 },
-  { name: "Cat Sitter", rate: 50, baseCost: 1000, cost: 1000, count: 0 },
+const items: Item[] = [
+  { name: "Toy Mouse", rate: 0.1, baseCost: 10, cost: 10, count: 0, description: "A simple toy that entertains your cat for hours." },
+  { name: "Kitten", rate: 2, baseCost: 100, cost: 100, count: 0, description: "A playful kitten that never gets tired of adding to your pets." },
+  { name: "Cat Sitter", rate: 50, baseCost: 1000, cost: 1000, count: 0, description: "Someone to take care of your cats so you don’t have to." },
+  { name: "Cat Tower", rate: 200, baseCost: 5000, cost: 5000, count: 0, description: "The ultimate playground for cats, increasing their happiness." },
+  { name: "Cat Cafe", rate: 1000, baseCost: 20000, cost: 20000, count: 0, description: "A cafe filled with cats, attracting new fans every second." }
 ];
 
 const counterEl = document.createElement("div");
@@ -57,22 +59,40 @@ catIcon.alt = "Cat";
 catIcon.style.width = "150px";
 catIcon.style.height = "150px";
 catIcon.style.display = "block";
+catIcon.style.transition = "transform 0.1s ease";
+
 clickBtn.append(catIcon);
 app.append(clickBtn);
 
+const upgradesContainer = document.createElement("div");
+upgradesContainer.style.display = "flex";
+upgradesContainer.style.flexDirection = "column";
+upgradesContainer.style.alignItems = "center";
+upgradesContainer.style.gap = "20px"; // spacing between upgrades
+app.append(upgradesContainer);
 
-clickBtn.addEventListener("click", () => {
-  counter++;
-  clickBtn.style.transform = "scale(1.2)";
-  setTimeout(() => {
-    clickBtn.style.transform = "scale(1)";
-  }, 100);
-  render();
-});
+const buttons: HTMLButtonElement[] = [];
+const descriptions: HTMLDivElement[] = [];
 
-for (const item of availableItems) {
+items.forEach((item) => {
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "flex";
+  wrapper.style.flexDirection = "column";
+  wrapper.style.alignItems = "center";
+  wrapper.style.gap = "6px"; // space between button and description
+
   const btn = document.createElement("button");
-  item.button = btn;
+  buttons.push(btn);
+  wrapper.append(btn);
+
+  const desc = document.createElement("div");
+  desc.style.fontSize = "0.9rem";
+  desc.style.color = "#555";
+  descriptions.push(desc);
+  wrapper.append(desc);
+
+  upgradesContainer.append(wrapper);
+
   btn.addEventListener("click", () => {
     if (counter >= item.cost) {
       counter -= item.cost;
@@ -82,21 +102,28 @@ for (const item of availableItems) {
       render();
     }
   });
-  app.append(btn);
-}
+});
+
+clickBtn.addEventListener("click", () => {
+  counter++;
+  render();
+
+  catIcon.style.transform = "scale(1.2)";
+  setTimeout(() => {
+    catIcon.style.transform = "scale(1)";
+  }, 100);
+});
 
 function render() {
   counterEl.textContent = `${Math.floor(counter)} pets`;
   rateEl.textContent = `Growth rate: ${growthRate.toFixed(1)} pets/sec`;
-  statusEl.textContent = availableItems
-    .map((i) => `${i.name}: ${i.count}`)
-    .join(", ");
-  for (const item of availableItems) {
-    if (item.button) {
-      item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${Math.floor(item.cost)} pets`;
-      item.button.disabled = counter < item.cost;
-    }
-  }
+  statusEl.textContent = items.map(i => `${i.name}: ${i.count}`).join(", ");
+
+  items.forEach((item, i) => {
+    buttons[i].textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${Math.floor(item.cost)} pets`;
+    buttons[i].disabled = counter < item.cost;
+    descriptions[i].textContent = item.description;
+  });
 }
 
 let lastTime = performance.now();
