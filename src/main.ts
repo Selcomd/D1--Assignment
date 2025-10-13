@@ -65,7 +65,8 @@ const items: Item[] = [
     baseCost: 20000,
     cost: 20000,
     count: 0,
-    description: "A cafe filled with cats, attracting new fans every second.",
+    description:
+      "A bustling cafe filled with cats, attracting new fans every second.",
   },
 ];
 
@@ -105,7 +106,7 @@ const upgradesContainer = document.createElement("div");
 upgradesContainer.style.display = "flex";
 upgradesContainer.style.flexDirection = "column";
 upgradesContainer.style.alignItems = "center";
-upgradesContainer.style.gap = "20px"; // spacing between upgrades
+upgradesContainer.style.gap = "20px";
 app.append(upgradesContainer);
 
 const buttons: HTMLButtonElement[] = [];
@@ -116,7 +117,7 @@ items.forEach((item) => {
   wrapper.style.display = "flex";
   wrapper.style.flexDirection = "column";
   wrapper.style.alignItems = "center";
-  wrapper.style.gap = "6px"; // space between button and description
+  wrapper.style.gap = "6px";
 
   const btn = document.createElement("button");
   buttons.push(btn);
