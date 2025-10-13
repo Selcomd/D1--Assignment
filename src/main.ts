@@ -15,11 +15,20 @@ let growthRate = 0;
 
 const PRICE_MULTIPLIER = 1.15;
 
-const upgrades = {
-  toy: { count: 0, baseCost: 10, cost: 10, rate: 0.1, label: "Toy Mouse" },
-  kitten: { count: 0, baseCost: 100, cost: 100, rate: 2, label: "Kitten" },
-  sitter: { count: 0, baseCost: 1000, cost: 1000, rate: 50, label: "Cat Sitter" },
-};
+interface Item {
+  name: string;
+  rate: number;
+  baseCost: number;
+  cost: number;
+  count: number;
+  button?: HTMLButtonElement;
+}
+
+const availableItems: Item[] = [
+  { name: "Toy Mouse", rate: 0.1, baseCost: 10, cost: 10, count: 0 },
+  { name: "Kitten", rate: 2, baseCost: 100, cost: 100, count: 0 },
+  { name: "Cat Sitter", rate: 50, baseCost: 1000, cost: 1000, count: 0 },
+];
 
 const counterEl = document.createElement("div");
 counterEl.style.fontSize = "2rem";
@@ -34,93 +43,67 @@ const statusEl = document.createElement("div");
 statusEl.style.fontSize = "1rem";
 app.append(statusEl);
 
-const clickBtn = document.createElement("div");
+const clickBtn = document.createElement("button");
+clickBtn.type = "button";
+clickBtn.ariaLabel = "Click the cat!";
+clickBtn.style.border = "none";
+clickBtn.style.background = "none";
+clickBtn.style.padding = "0";
 clickBtn.style.cursor = "pointer";
-clickBtn.style.display = "inline-block";
-clickBtn.style.transition = "transform 0.1s ease";
 
 const catIcon = document.createElement("img");
 catIcon.src = catImg;
 catIcon.alt = "Cat";
 catIcon.style.width = "150px";
 catIcon.style.height = "150px";
-catIcon.style.userSelect = "none";
-catIcon.style.pointerEvents = "none";
+catIcon.style.display = "block";
 clickBtn.append(catIcon);
 app.append(clickBtn);
 
-const upgradeToy = document.createElement("button");
-app.append(upgradeToy);
-
-const upgradeKitten = document.createElement("button");
-app.append(upgradeKitten);
-
-const upgradeSitter = document.createElement("button");
-app.append(upgradeSitter);
 
 clickBtn.addEventListener("click", () => {
   counter++;
-
-  clickBtn.style.transform = "scale(1.1)";
+  clickBtn.style.transform = "scale(1.2)";
   setTimeout(() => {
     clickBtn.style.transform = "scale(1)";
   }, 100);
-
   render();
 });
 
-upgradeToy.addEventListener("click", () => {
-  if (counter >= upgrades.toy.cost) {
-    counter -= upgrades.toy.cost;
-    growthRate += upgrades.toy.rate;
-    upgrades.toy.count++;
-    upgrades.toy.cost *= PRICE_MULTIPLIER;
-    render();
-  }
-});
-
-upgradeKitten.addEventListener("click", () => {
-  if (counter >= upgrades.kitten.cost) {
-    counter -= upgrades.kitten.cost;
-    growthRate += upgrades.kitten.rate;
-    upgrades.kitten.count++;
-    upgrades.kitten.cost *= PRICE_MULTIPLIER;
-    render();
-  }
-});
-
-upgradeSitter.addEventListener("click", () => {
-  if (counter >= upgrades.sitter.cost) {
-    counter -= upgrades.sitter.cost;
-    growthRate += upgrades.sitter.rate;
-    upgrades.sitter.count++;
-    upgrades.sitter.cost *= PRICE_MULTIPLIER;
-    render();
-  }
-});
+for (const item of availableItems) {
+  const btn = document.createElement("button");
+  item.button = btn;
+  btn.addEventListener("click", () => {
+    if (counter >= item.cost) {
+      counter -= item.cost;
+      growthRate += item.rate;
+      item.count++;
+      item.cost *= PRICE_MULTIPLIER;
+      render();
+    }
+  });
+  app.append(btn);
+}
 
 function render() {
-  counterEl.textContent = `${Math.floor(counter)} Pets`;
+  counterEl.textContent = `${Math.floor(counter)} pets`;
   rateEl.textContent = `Growth rate: ${growthRate.toFixed(1)} pets/sec`;
-  statusEl.textContent =
-    `Upgrades — Toy Mice: ${upgrades.toy.count}, Kittens: ${upgrades.kitten.count}, Cat Sitters: ${upgrades.sitter.count}`;
-
-  upgradeToy.textContent = `Buy ${upgrades.toy.label} (+${upgrades.toy.rate}/sec) — Cost: ${Math.floor(upgrades.toy.cost)} pets`;
-  upgradeKitten.textContent = `Adopt ${upgrades.kitten.label} (+${upgrades.kitten.rate}/sec) — Cost: ${Math.floor(upgrades.kitten.cost)} pets`;
-  upgradeSitter.textContent = `Hire ${upgrades.sitter.label} (+${upgrades.sitter.rate}/sec) — Cost: ${Math.floor(upgrades.sitter.cost)} pets`;
-
-  upgradeToy.disabled = counter < upgrades.toy.cost;
-  upgradeKitten.disabled = counter < upgrades.kitten.cost;
-  upgradeSitter.disabled = counter < upgrades.sitter.cost;
+  statusEl.textContent = availableItems
+    .map((i) => `${i.name}: ${i.count}`)
+    .join(", ");
+  for (const item of availableItems) {
+    if (item.button) {
+      item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${Math.floor(item.cost)} pets`;
+      item.button.disabled = counter < item.cost;
+    }
+  }
 }
 
 let lastTime = performance.now();
 function update(now: number) {
   const deltaSeconds = (now - lastTime) / 1000;
   lastTime = now;
-
   counter += growthRate * deltaSeconds;
-
   render();
   requestAnimationFrame(update);
 }
