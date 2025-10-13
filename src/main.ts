@@ -13,10 +13,12 @@ document.body.append(app);
 let counter = 0;
 let growthRate = 0;
 
+const PRICE_MULTIPLIER = 1.15;
+
 const upgrades = {
-  A: 0,
-  B: 0,
-  C: 0,
+  A: { count: 0, baseCost: 10, cost: 10, rate: 0.1 },
+  B: { count: 0, baseCost: 100, cost: 100, rate: 2 },
+  C: { count: 0, baseCost: 1000, cost: 1000, rate: 50 },
 };
 
 const counterEl = document.createElement("div");
@@ -45,15 +47,12 @@ clickBtn.append(catIcon);
 app.append(clickBtn);
 
 const upgradeA = document.createElement("button");
-upgradeA.textContent = "Upgrade A (+0.1/sec) — Cost: 10 cats";
 app.append(upgradeA);
 
 const upgradeB = document.createElement("button");
-upgradeB.textContent = "Upgrade B (+2/sec) — Cost: 100 cats";
 app.append(upgradeB);
 
 const upgradeC = document.createElement("button");
-upgradeC.textContent = "Upgrade C (+50/sec) — Cost: 1000 cats";
 app.append(upgradeC);
 
 clickBtn.addEventListener("click", () => {
@@ -62,28 +61,31 @@ clickBtn.addEventListener("click", () => {
 });
 
 upgradeA.addEventListener("click", () => {
-  if (counter >= 10) {
-    counter -= 10;
-    growthRate += 0.1;
-    upgrades.A++;
+  if (counter >= upgrades.A.cost) {
+    counter -= upgrades.A.cost;
+    growthRate += upgrades.A.rate;
+    upgrades.A.count++;
+    upgrades.A.cost *= PRICE_MULTIPLIER;
     render();
   }
 });
 
 upgradeB.addEventListener("click", () => {
-  if (counter >= 100) {
-    counter -= 100;
-    growthRate += 2;
-    upgrades.B++;
+  if (counter >= upgrades.B.cost) {
+    counter -= upgrades.B.cost;
+    growthRate += upgrades.B.rate;
+    upgrades.B.count++;
+    upgrades.B.cost *= PRICE_MULTIPLIER;
     render();
   }
 });
 
 upgradeC.addEventListener("click", () => {
-  if (counter >= 1000) {
-    counter -= 1000;
-    growthRate += 50;
-    upgrades.C++;
+  if (counter >= upgrades.C.cost) {
+    counter -= upgrades.C.cost;
+    growthRate += upgrades.C.rate;
+    upgrades.C.count++;
+    upgrades.C.cost *= PRICE_MULTIPLIER;
     render();
   }
 });
@@ -92,11 +94,15 @@ function render() {
   counterEl.textContent = `${Math.floor(counter)} cats`;
   rateEl.textContent = `Growth rate: ${growthRate.toFixed(1)} cats/sec`;
   statusEl.textContent =
-    `Upgrades — A: ${upgrades.A}, B: ${upgrades.B}, C: ${upgrades.C}`;
+    `Upgrades — A: ${upgrades.A.count}, B: ${upgrades.B.count}, C: ${upgrades.C.count}`;
 
-  upgradeA.disabled = counter < 10;
-  upgradeB.disabled = counter < 100;
-  upgradeC.disabled = counter < 1000;
+  upgradeA.textContent = `Upgrade A (+0.1/sec) — Cost: ${Math.floor(upgrades.A.cost)} cats`;
+  upgradeB.textContent = `Upgrade B (+2/sec) — Cost: ${Math.floor(upgrades.B.cost)} cats`;
+  upgradeC.textContent = `Upgrade C (+50/sec) — Cost: ${Math.floor(upgrades.C.cost)} cats`;
+
+  upgradeA.disabled = counter < upgrades.A.cost;
+  upgradeB.disabled = counter < upgrades.B.cost;
+  upgradeC.disabled = counter < upgrades.C.cost;
 }
 
 let lastTime = performance.now();
