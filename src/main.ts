@@ -25,11 +25,48 @@ interface Item {
 }
 
 const items: Item[] = [
-  { name: "Toy Mouse", rate: 0.1, baseCost: 10, cost: 10, count: 0, description: "A simple toy that entertains your cat for hours." },
-  { name: "Kitten", rate: 2, baseCost: 100, cost: 100, count: 0, description: "A playful kitten that never gets tired of adding to your pets." },
-  { name: "Cat Sitter", rate: 50, baseCost: 1000, cost: 1000, count: 0, description: "Someone to take care of your cats so you don’t have to." },
-  { name: "Cat Tower", rate: 200, baseCost: 5000, cost: 5000, count: 0, description: "The ultimate playground for cats, increasing their happiness." },
-  { name: "Cat Cafe", rate: 1000, baseCost: 20000, cost: 20000, count: 0, description: "A cafe filled with cats, attracting new fans every second." }
+  {
+    name: "Toy Mouse",
+    rate: 0.1,
+    baseCost: 10,
+    cost: 10,
+    count: 0,
+    description: "A simple toy that entertains your cat for hours.",
+  },
+  {
+    name: "Kitten",
+    rate: 2,
+    baseCost: 100,
+    cost: 100,
+    count: 0,
+    description:
+      "A playful kitten that never gets tired of adding to your pets.",
+  },
+  {
+    name: "Cat Sitter",
+    rate: 50,
+    baseCost: 1000,
+    cost: 1000,
+    count: 0,
+    description: "Someone to take care of your cats so you don’t have to.",
+  },
+  {
+    name: "Cat Tower",
+    rate: 200,
+    baseCost: 5000,
+    cost: 5000,
+    count: 0,
+    description:
+      "The ultimate playground for cats, increasing their happiness.",
+  },
+  {
+    name: "Cat Cafe",
+    rate: 1000,
+    baseCost: 20000,
+    cost: 20000,
+    count: 0,
+    description: "A cafe filled with cats, attracting new fans every second.",
+  },
 ];
 
 const counterEl = document.createElement("div");
@@ -117,10 +154,12 @@ clickBtn.addEventListener("click", () => {
 function render() {
   counterEl.textContent = `${Math.floor(counter)} pets`;
   rateEl.textContent = `Growth rate: ${growthRate.toFixed(1)} pets/sec`;
-  statusEl.textContent = items.map(i => `${i.name}: ${i.count}`).join(", ");
+  statusEl.textContent = items.map((i) => `${i.name}: ${i.count}`).join(", ");
 
   items.forEach((item, i) => {
-    buttons[i].textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${Math.floor(item.cost)} pets`;
+    buttons[i].textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
+      Math.floor(item.cost)
+    } pets`;
     buttons[i].disabled = counter < item.cost;
     descriptions[i].textContent = item.description;
   });
