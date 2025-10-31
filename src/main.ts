@@ -10,8 +10,8 @@ app.style.height = "100vh";
 app.style.gap = "16px";
 document.body.append(app);
 
-let counter = 0;
-let growthRate = 0;
+let petCount = 0;
+let petsPerSecond = 0;
 
 const PRICE_MULTIPLIER = 1.15;
 
@@ -132,9 +132,9 @@ items.forEach((item) => {
   upgradesContainer.append(wrapper);
 
   btn.addEventListener("click", () => {
-    if (counter >= item.cost) {
-      counter -= item.cost;
-      growthRate += item.rate;
+    if (petCount >= item.cost) {
+      petCount -= item.cost;
+      petsPerSecond += item.rate;
       item.count++;
       item.cost *= PRICE_MULTIPLIER;
       render();
@@ -143,7 +143,7 @@ items.forEach((item) => {
 });
 
 clickBtn.addEventListener("click", () => {
-  counter++;
+  petCount++;
   render();
 
   catIcon.style.transform = "scale(1.2)";
@@ -153,15 +153,15 @@ clickBtn.addEventListener("click", () => {
 });
 
 function render() {
-  counterEl.textContent = `${Math.floor(counter)} pets`;
-  rateEl.textContent = `Growth rate: ${growthRate.toFixed(1)} pets/sec`;
+  counterEl.textContent = `${Math.floor(petCount)} pets`;
+  rateEl.textContent = `Growth rate: ${petsPerSecond.toFixed(1)} pets/sec`;
   statusEl.textContent = items.map((i) => `${i.name}: ${i.count}`).join(", ");
 
   items.forEach((item, i) => {
     buttons[i].textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
       Math.floor(item.cost)
     } pets`;
-    buttons[i].disabled = counter < item.cost;
+    buttons[i].disabled = petCount < item.cost;
     descriptions[i].textContent = item.description;
   });
 }
@@ -170,7 +170,7 @@ let lastTime = performance.now();
 function update(now: number) {
   const deltaSeconds = (now - lastTime) / 1000;
   lastTime = now;
-  counter += growthRate * deltaSeconds;
+  petCount += petsPerSecond * deltaSeconds;
   render();
   requestAnimationFrame(update);
 }
