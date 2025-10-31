@@ -1,5 +1,5 @@
-import "./style.css";
 import catImg from "./Cat.png";
+import "./style.css";
 
 const app = document.createElement("div");
 app.style.display = "flex";
@@ -9,6 +9,9 @@ app.style.alignItems = "center";
 app.style.height = "100vh";
 app.style.gap = "16px";
 document.body.append(app);
+
+// === Game State ===
+// (petCount, petsPerSecond, items, etc.)
 
 let petCount = 0;
 let petsPerSecond = 0;
@@ -70,6 +73,9 @@ const items: Item[] = [
   },
 ];
 
+// === DOM Elements ===
+// (counterEl, rateEl, clickBtn, etc.)
+
 const counterEl = document.createElement("div");
 counterEl.style.fontSize = "2rem";
 counterEl.style.fontWeight = "bold";
@@ -101,6 +107,9 @@ catIcon.style.transition = "transform 0.1s ease";
 
 clickBtn.append(catIcon);
 app.append(clickBtn);
+
+// === UI Setup ===
+// (creation of buttons, event listeners, appending to DOM)
 
 const upgradesContainer = document.createElement("div");
 upgradesContainer.style.display = "flex";
@@ -165,6 +174,9 @@ function render() {
     descriptions[i].textContent = item.description;
   });
 }
+
+// === Game Loop ===
+// (requestAnimationFrame, update function)
 
 let lastTime = performance.now();
 function update(now: number) {
