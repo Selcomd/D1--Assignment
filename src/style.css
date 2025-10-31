@@ -1,5 +1,98 @@
-.icon {
-  width: 64px;
-  vertical-align: top;
-  border: 1px solid salmon;
+/* === UI Inspirations ===
+   Inspired by inyoo403's Planet Clicker (https://github.com/inyoo403)
+   Added structured panels to give everything more organization.
+
+   Inspired by UriosteguiM12's Pizza Clicker (https://github.com/UriosteguiM12)
+   Added background image (catBackground.png) to give it a more refined look.
+*/
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("./catBackground.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  color: #e2e8f0;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+#game-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+button img {
+  width: 180px;
+  height: 180px;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.15s ease;
+}
+
+button img:hover {
+  transform: scale(1.1);
+}
+
+button:not(:has(img)) {
+  background: #334155;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 4px;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+button:not(:has(img)):hover {
+  background: #475569;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.panel div {
+  word-wrap: break-word;
+  max-width: 90%;
+}
+
+@keyframes panBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -400px 0;
+  }
 }

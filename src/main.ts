@@ -1,3 +1,10 @@
+// === UI Inspirations ===
+// Inspired by inyoo403's Planet Clicker (https://github.com/inyoo403)
+// Added structured panels to give everything more organization.
+//
+// Inspired by UriosteguiM12's Pizza Clicker (https://github.com/UriosteguiM12)
+// Added background image (catBackground.png) to give it a more refined look.
+
 import "./style.css";
 import catImg from "./Cat.png";
 
@@ -67,29 +74,42 @@ const items: Item[] = [
 ];
 
 // === DOM Elements ===
-// (counterEl, rateEl, clickBtn, etc.)
+// (main container and panels)
 
 const app = document.createElement("div");
-app.style.display = "flex";
-app.style.flexDirection = "column";
-app.style.justifyContent = "center";
-app.style.alignItems = "center";
-app.style.height = "100vh";
-app.style.gap = "16px";
+app.id = "game-container";
 document.body.append(app);
+
+// Left panel (stats)
+const statsPanel = document.createElement("div");
+statsPanel.className = "panel";
+app.append(statsPanel);
+
+// Center panel (main cat clicker)
+const mainPanel = document.createElement("div");
+mainPanel.className = "panel";
+app.append(mainPanel);
+
+// Right panel (upgrades)
+const upgradesPanel = document.createElement("div");
+upgradesPanel.className = "panel";
+app.append(upgradesPanel);
+
+// === Stats Elements ===
 
 const counterEl = document.createElement("div");
 counterEl.style.fontSize = "2rem";
 counterEl.style.fontWeight = "bold";
-app.append(counterEl);
 
 const rateEl = document.createElement("div");
 rateEl.style.fontSize = "1.2rem";
-app.append(rateEl);
 
 const statusEl = document.createElement("div");
 statusEl.style.fontSize = "1rem";
-app.append(statusEl);
+
+statsPanel.append(counterEl, rateEl, statusEl);
+
+// === Main Cat Button ===
 
 const clickBtn = document.createElement("button");
 clickBtn.type = "button";
@@ -108,17 +128,16 @@ catIcon.style.display = "block";
 catIcon.style.transition = "transform 0.1s ease";
 
 clickBtn.append(catIcon);
-app.append(clickBtn);
+mainPanel.append(clickBtn);
 
-// === UI Setup ===
-// (creation of buttons, event listeners, appending to DOM)
+// === Upgrades Section ===
 
 const upgradesContainer = document.createElement("div");
 upgradesContainer.style.display = "flex";
 upgradesContainer.style.flexDirection = "column";
 upgradesContainer.style.alignItems = "center";
 upgradesContainer.style.gap = "20px";
-app.append(upgradesContainer);
+upgradesPanel.append(upgradesContainer);
 
 const buttons: HTMLButtonElement[] = [];
 const descriptions: HTMLDivElement[] = [];
@@ -136,7 +155,7 @@ items.forEach((item) => {
 
   const desc = document.createElement("div");
   desc.style.fontSize = "0.9rem";
-  desc.style.color = "#555";
+  desc.style.color = "#ccc";
   descriptions.push(desc);
   wrapper.append(desc);
 
