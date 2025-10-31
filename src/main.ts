@@ -1,22 +1,8 @@
-import catImg from "./Cat.png";
 import "./style.css";
+import catImg from "./Cat.png";
 
-const app = document.createElement("div");
-app.style.display = "flex";
-app.style.flexDirection = "column";
-app.style.justifyContent = "center";
-app.style.alignItems = "center";
-app.style.height = "100vh";
-app.style.gap = "16px";
-document.body.append(app);
-
-// === Game State ===
-// (petCount, petsPerSecond, items, etc.)
-
-let petCount = 0;
-let petsPerSecond = 0;
-
-const PRICE_MULTIPLIER = 1.15;
+// === Type Definitions ===
+// (interface Item and related data structures)
 
 interface Item {
   name: string;
@@ -26,6 +12,13 @@ interface Item {
   count: number;
   description: string;
 }
+
+// === Game State ===
+// (petCount, petsPerSecond, items, etc.)
+
+let petCount = 0;
+let petsPerSecond = 0;
+const PRICE_MULTIPLIER = 1.15;
 
 const items: Item[] = [
   {
@@ -75,6 +68,15 @@ const items: Item[] = [
 
 // === DOM Elements ===
 // (counterEl, rateEl, clickBtn, etc.)
+
+const app = document.createElement("div");
+app.style.display = "flex";
+app.style.flexDirection = "column";
+app.style.justifyContent = "center";
+app.style.alignItems = "center";
+app.style.height = "100vh";
+app.style.gap = "16px";
+document.body.append(app);
 
 const counterEl = document.createElement("div");
 counterEl.style.fontSize = "2rem";
@@ -161,6 +163,9 @@ clickBtn.addEventListener("click", () => {
   }, 100);
 });
 
+// === Render Function ===
+// (updates the display text and button states)
+
 function render() {
   counterEl.textContent = `${Math.floor(petCount)} pets`;
   rateEl.textContent = `Growth rate: ${petsPerSecond.toFixed(1)} pets/sec`;
@@ -176,9 +181,10 @@ function render() {
 }
 
 // === Game Loop ===
-// (requestAnimationFrame, update function)
+// (update function and requestAnimationFrame)
 
 let lastTime = performance.now();
+
 function update(now: number) {
   const deltaSeconds = (now - lastTime) / 1000;
   lastTime = now;
